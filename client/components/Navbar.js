@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { AppBar, FlatButton } from 'material-ui';
+import { browserHistory } from 'react-router'
+import { Link } from 'react-router';
 
 class Navbar extends Component {
 	constructor(props) {
@@ -8,16 +10,22 @@ class Navbar extends Component {
 			windowWidth: window.innerWidth
 		}
 		this.tabs = this.tabs.bind(this);
+		this.homeClick = this.homeClick.bind(this);
 	}
 	tabs() {
 		return (
 			<div>
-				<FlatButton style={{ color: 'white' }} label="Tab1" />
-				<FlatButton style={{ color: 'white' }} label="Tab2" />
-				<FlatButton style={{ color: 'white' }} label="Tab3" />
-				<FlatButton style={{ color: 'white' }} label="Tab4" />
+				<FlatButton 
+					style={{ color: 'white' }} 
+					label="Sign Up" 
+					containerElement={<Link to="/signup" />}
+				/>
 			</div>
 		);
+	}
+	homeClick() {
+		console.log("Nope");
+		// browserHistory.push("/");
 	}
 	handleResize() {
 	    this.setState({windowWidth: window.innerWidth});
@@ -35,7 +43,7 @@ class Navbar extends Component {
 		if(this.state.windowWidth > 600) {
 			return (
 				<AppBar
-		    		title="Example"
+		    		title={<Link style={{color:"white", textDecoration:"none"}} to="/">Example</Link>}
 		    		showMenuIconButton={ false }
 		    		iconElementRight={ this.tabs() } 
 		    	/>
@@ -43,7 +51,8 @@ class Navbar extends Component {
 		} else {
 			return (
 				<AppBar
-		    		title="Example"
+		    		title="Red Dice"
+		    		onTitleTouchTap={this.homeClick()}
 		    		showMenuIconButton={ true } 
 		    	/>
 			);
