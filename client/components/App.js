@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import Greetings from './Greetings';
+import Navbar from './Navbar';
 
 class App extends Component {
+	componentDidUpdate() {
+    	componentHandler.upgradeDom();
+  	}
 	render() {
 		return (
-			<Greetings />
+			<div>
+				<Navbar />
+			</div>
 		);
 	}
 }
