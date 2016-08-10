@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
+import SignUpForm from './SignUpForm';
 
-export default () => {
-	return (
-		<h1>Sign up test</h1>
-	);
+class SignUp extends Component {
+	render() {
+		return(
+			<div className="row">
+				<div className="col-md-4 col-md-offset-4">
+					<div className="box">
+						<SignUpForm />
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
+
+export default SignUp;

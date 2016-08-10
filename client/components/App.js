@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 class App extends Component {
 	render() {
 		return (
-			<div>
+			<div className="container">
 				<Navbar />
 				{ this.props.children }
 			</div>
