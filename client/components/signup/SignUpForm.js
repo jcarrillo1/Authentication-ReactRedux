@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, RaisedButton, SelectField, MenuItem } from 'material-ui';
+import { TextField, RaisedButton } from 'material-ui';
 import timezones from '../../data/timezones';
 
 class SignUpForm extends Component {
@@ -20,7 +20,7 @@ class SignUpForm extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		console.log(this.state);
+		this.props.userSignUpRequest(this.state);
 	}
 	render() {
 		const options = Object.keys(timezones).map( (val, index) => {
@@ -84,6 +84,10 @@ class SignUpForm extends Component {
 			</form>
 		);
 	}
+}
+
+SignUpForm.propTypes = {
+	userSignUpRequest: React.PropTypes.func.isRequired
 }
 
 export default SignUpForm;
