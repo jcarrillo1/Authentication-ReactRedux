@@ -1,11 +1,18 @@
 import express from 'express';
 import path from 'path';
 import webpack from 'webpack';
+import bodyParser from 'body-parser';
 import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.dev';
 
+import users from './routes/users';
+
 let app = express();
+
+app.use(bodyParser.json());
+
+app.use('/api/users', users);
 
 const compiler = webpack(webpackConfig);
 

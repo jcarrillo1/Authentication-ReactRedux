@@ -10,7 +10,8 @@ class SignUpForm extends Component {
 			email: '',
 			password: '',
 			passwordConfirm: '', 
-			timezone: ''
+			timezone: '',
+			errors: ''
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -20,7 +21,15 @@ class SignUpForm extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		this.props.userSignUpRequest(this.state);
+		this.setState({ errors: '' })
+		this.props.userSignUpRequest(this.state)
+			.then(() => {
+				console.log("Cool");
+			})
+			.catch((err) => {
+				console.log([err.response.data]);
+				this.setState({ errors: err.response.data });
+			});
 	}
 	render() {
 		const options = Object.keys(timezones).map( (val, index) => {
@@ -36,6 +45,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.username}
 					onChange={this.onChange}
+					errorText={this.state.errors.username}
 				/>
 				<TextField 
 					name="email"
@@ -45,6 +55,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.email}
 					onChange={this.onChange}
+					errorText={this.state.errors.email}
 				/>
 				<TextField 
 					name="password"
@@ -54,6 +65,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.password}
 					onChange={this.onChange}
+					errorText={this.state.errors.password}
 				/>
 				<TextField 
 					name="passwordConfirm"
@@ -63,6 +75,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.passwordConfirm}
 					onChange={this.onChange}
+					errorText={this.state.errors.passwordConfirm}
 				/>
 				<br /><br />
 				<div className="form-group">
@@ -74,6 +87,7 @@ class SignUpForm extends Component {
 						<option value="" disabled>Choose your timezone</option>
 						{options}
 					</select>
+					{this.state.errors.timezone && <div style={{position: 'relative', 'fontSize': '12px', 'lineHeight': '12px', color: 'rgb(244, 67, 54)', transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'}}>This field is required</div>}
 				</div>
 				<RaisedButton 
 					label="Sign Up" 
