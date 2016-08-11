@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { TextField, RaisedButton } from 'material-ui';
 import timezones from '../../data/timezones';
+import validateInput from '../../../server/shared/validations/signup';
 
 class SignUpForm extends Component {
 	constructor(props) {
@@ -17,21 +18,33 @@ class SignUpForm extends Component {
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.isValid = this.isValid.bind(this);
 	}
 	onChange(e) {
 		this.setState({ [e.target.name]: e.target.value });
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		this.setState({ errors: {}, isLoading: true })
-		this.props.userSignUpRequest(this.state)
-			.then(() => {
-				console.log("Cool");
-			})
-			.catch((err) => {
-				console.log([err.response.data]);
-				this.setState({ errors: err.response.data, isLoading: false });
-			});
+		if(this.isValid()) {
+			this.setState({ errors: {}, isLoading: true })
+			this.props.userSignUpRequest(this.state)
+				.then(() => {
+					console.log("Cool");
+				})
+				.catch((err) => {
+					console.log([err.response.data]);
+					this.setState({ errors: err.response.data, isLoading: false });
+				});
+		}
+		
+	}
+	isValid() {
+		const {errors, isValid } = validateInput(this.state);
+		if(!isValid) {
+			this.setState({errors});
+		}
+
+		return isValid;
 	}
 	render() {
 		const {errors} = this.state;
