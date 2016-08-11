@@ -45,14 +45,12 @@ function isEmpty(object) {
 }
 
 router.post('/', (req, res) => {
-	console.log(req.body);
 	const { err, isValid } = validateInput(req.body);
 	if(!isValid) {
 		return res.status(400).json(err);
 	} else {
 		return res.status(200).json({"success":true})
 	}
-
 });
 
 export default router;

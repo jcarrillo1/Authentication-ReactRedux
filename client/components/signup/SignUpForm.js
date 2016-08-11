@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { TextField, RaisedButton } from 'material-ui';
 import timezones from '../../data/timezones';
 
@@ -11,7 +12,8 @@ class SignUpForm extends Component {
 			password: '',
 			passwordConfirm: '', 
 			timezone: '',
-			errors: ''
+			errors: {},
+			isLoading: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -21,17 +23,18 @@ class SignUpForm extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		this.setState({ errors: '' })
+		this.setState({ errors: {}, isLoading: true })
 		this.props.userSignUpRequest(this.state)
 			.then(() => {
 				console.log("Cool");
 			})
 			.catch((err) => {
 				console.log([err.response.data]);
-				this.setState({ errors: err.response.data });
+				this.setState({ errors: err.response.data, isLoading: false });
 			});
 	}
 	render() {
+		const {errors} = this.state;
 		const options = Object.keys(timezones).map( (val, index) => {
 			return <option key={index} value={val}>{val}</option>;
 		});
@@ -45,7 +48,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.username}
 					onChange={this.onChange}
-					errorText={this.state.errors.username}
+					errorText={errors.username}
 				/>
 				<TextField 
 					name="email"
@@ -55,7 +58,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.email}
 					onChange={this.onChange}
-					errorText={this.state.errors.email}
+					errorText={errors.email}
 				/>
 				<TextField 
 					name="password"
@@ -65,7 +68,7 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.password}
 					onChange={this.onChange}
-					errorText={this.state.errors.password}
+					errorText={errors.password}
 				/>
 				<TextField 
 					name="passwordConfirm"
@@ -75,10 +78,10 @@ class SignUpForm extends Component {
 					fullWidth={true}
 					value={this.state.passwordConfirm}
 					onChange={this.onChange}
-					errorText={this.state.errors.passwordConfirm}
+					errorText={errors.passwordConfirm}
 				/>
 				<br /><br />
-				<div className="form-group">
+				<div className={classnames('form-group', { 'has-error': errors.timezone})}>
 					<select 
 						className="form-control" 
 						name="timezone" 
@@ -87,10 +90,11 @@ class SignUpForm extends Component {
 						<option value="" disabled>Choose your timezone</option>
 						{options}
 					</select>
-					{this.state.errors.timezone && <div style={{position: 'relative', 'fontSize': '12px', 'lineHeight': '12px', color: 'rgb(244, 67, 54)', transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'}}>This field is required</div>}
+					{errors.timezone && <span className='help-block'>{errors.timezone}</span>}
 				</div>
 				<RaisedButton 
-					label="Sign Up" 
+					label="Sign Up"
+					disabled={this.state.isLoading} 
 					primary={true} 
 					fullWidth={true} 
 					onClick={this.onSubmit}
