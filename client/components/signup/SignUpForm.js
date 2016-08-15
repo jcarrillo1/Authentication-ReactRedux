@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import classnames from 'classnames';
 import { TextField, RaisedButton } from 'material-ui';
 import timezones from '../../data/timezones';
@@ -29,7 +30,7 @@ class SignUpForm extends Component {
 			this.setState({ errors: {}, isLoading: true })
 			this.props.userSignUpRequest(this.state)
 				.then(() => {
-					console.log("Cool");
+					browserHistory.push('/');
 				})
 				.catch((err) => {
 					console.log([err.response.data]);
