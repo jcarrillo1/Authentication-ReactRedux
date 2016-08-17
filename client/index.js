@@ -6,15 +6,19 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware }from 'redux';
+import { createStore, applyMiddleware, compose }from 'redux';
+import rootReducer from './rootReducer';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
 const store = createStore(
-	(state = {}) => state, 
-	applyMiddleware(thunk)
+	rootReducer, 
+	compose(
+		applyMiddleware(thunk),
+		window.devToolsExtension ? window.devToolsExtension() : f => f
+	)
 );
 
 render (
