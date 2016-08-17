@@ -30,7 +30,6 @@ class SignUpForm extends Component {
 			this.setState({ errors: {}, isLoading: true })
 			this.props.userSignUpRequest(this.state)
 				.then(() => {
-					console.log(this.props);
 					this.props.addFlashMessage({
 						type: 'success',
 						text: 'You signed up successfully. Welcome!'
